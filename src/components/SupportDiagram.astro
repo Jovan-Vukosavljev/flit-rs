@@ -1,0 +1,163 @@
+---
+import type { Copy } from '../i18n';
+
+interface Props {
+    copy: Copy['hero'];
+}
+const { copy } = Astro.props;
+---
+
+<div class='diagram' role='img' aria-label={copy.diagram}>
+    <div class='diagram-top' aria-hidden='true'>
+        <span>FLIT / IT SUPPORT</span><span class='i-lucide-radio size-4'></span>
+    </div>
+    <div class='orbit orbit-outer'></div><div class='orbit orbit-inner'></div>
+    <svg viewBox='0 0 480 420' fill='none' aria-hidden='true' class='connections'>
+        <path
+            d='M240 130V88H372V315H302M240 252V320H111V186H178'
+            stroke='currentColor'
+            stroke-width='1.2'></path>
+        <path
+            d='M240 130V88H372V151M240 252V320H165'
+            stroke='var(--accent)'
+            stroke-width='1.6'></path>
+        <circle cx='372' cy='151' r='4' fill='var(--accent)'></circle><circle
+            cx='165'
+            cy='320'
+            r='4'
+            fill='var(--accent)'></circle>
+    </svg>
+    <div class='node main-node' aria-hidden='true'>
+        <span class='i-lucide-monitor size-10'></span><span>{copy.office}</span><span
+            class='node-bars'><i></i><i></i><i></i><i></i></span
+        >
+    </div>
+    <div class='node remote-node' aria-hidden='true'>
+        <span class='i-lucide-headset size-5'></span><span>{copy.remote}</span><span
+            class='node-dot'></span>
+    </div>
+    <div class='node onsite-node' aria-hidden='true'>
+        <span class='i-lucide-network size-5'></span><span>{copy.onsite}</span><span
+            class='node-dot'></span>
+    </div>
+    <div class='diagram-bottom' aria-hidden='true'>
+        <span>01 / FLIT</span><span>IT SUPPORT / 02</span>
+    </div>
+</div>
+<style>
+    .diagram {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 480 / 420;
+        background-image: radial-gradient(var(--grid) 1px, transparent 1px);
+        background-size: 20px 20px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background-color: var(--surface);
+    }
+    .diagram-top,
+    .diagram-bottom {
+        position: absolute;
+        left: 24px;
+        right: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 8px;
+        letter-spacing: 0.15em;
+    }
+    .diagram-top {
+        top: 22px;
+    }
+    .diagram-bottom {
+        bottom: 20px;
+    }
+    .orbit {
+        position: absolute;
+        width: 66%;
+        aspect-ratio: 1;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        left: 50%;
+        top: 48%;
+        transform: translate(-50%, -50%);
+        opacity: 0.65;
+    }
+    .orbit-inner {
+        width: 43%;
+    }
+    .connections {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        color: var(--line);
+    }
+    .node {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        background: var(--surface-raised);
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        box-shadow: 0 12px 30px #00000010;
+    }
+    .main-node {
+        flex-direction: column;
+        left: 36%;
+        top: 31%;
+        width: 28%;
+        height: 29%;
+        justify-content: center;
+        gap: 12px;
+        font-size: 10px;
+    }
+    .main-node > span:first-child {
+        color: var(--accent);
+    }
+    .node-bars {
+        display: flex;
+        gap: 4px;
+    }
+    .node-bars i {
+        width: 15px;
+        height: 3px;
+        background: var(--accent);
+        opacity: 0.6;
+    }
+    .node-bars i:last-child {
+        opacity: 0.2;
+    }
+    .remote-node,
+    .onsite-node {
+        gap: 11px;
+        padding: 15px 16px;
+        font-size: 10px;
+    }
+    .remote-node {
+        left: 5%;
+        top: 22%;
+    }
+    .onsite-node {
+        right: 5%;
+        bottom: 19%;
+    }
+    .remote-node > span:first-child,
+    .onsite-node > span:first-child {
+        color: var(--accent);
+    }
+    .node-dot {
+        height: 5px;
+        width: 5px;
+        background: var(--accent);
+        border-radius: 50%;
+    }
+    @media (max-width: 480px) {
+        .remote-node {
+            top: 15%;
+            padding: 11px 12px;
+        }
+    }
+</style>

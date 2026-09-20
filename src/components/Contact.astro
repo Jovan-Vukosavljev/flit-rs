@@ -1,0 +1,119 @@
+---
+import { type Locale, site } from '../config/site';
+import type { Copy } from '../i18n';
+
+interface Props {
+    locale: Locale;
+    copy: Copy['contact'];
+}
+const { locale, copy } = Astro.props;
+---
+
+<section id='contact' class='contact' aria-labelledby='contact-heading'>
+    <div class='shell section-space contact-grid'>
+        <div>
+            <p class='eyebrow'>{copy.eyebrow}</p><h2
+                id='contact-heading'
+                class='section-title mt-5'
+            >
+                {copy.heading}
+            </h2><p class='body-copy mt-6 max-w-sm'>{copy.body}</p>
+        </div>
+        <div class='contact-details'>
+            <div class='contact-item'>
+                <span class='i-lucide-phone size-5' aria-hidden='true'></span><div>
+                    <h3>{copy.phone}</h3>{
+                        site.phone ? (
+                            <a href={`tel:${site.phone.replace(/[^+\d]/g, '')}`}>
+                                {site.phone}
+                            </a>
+                        ) : (
+                            <p data-contact-placeholder>{copy.phonePlaceholder}</p>
+                        )
+                    }
+                </div>
+            </div>
+            <div class='contact-item'>
+                <span class='i-lucide-mail size-5' aria-hidden='true'></span><div>
+                    <h3>{copy.email}</h3>{
+                        site.email ? (
+                            <a href={`mailto:${site.email}`}>{site.email}</a>
+                        ) : (
+                            <p data-contact-placeholder>{copy.emailPlaceholder}</p>
+                        )
+                    }
+                </div>
+            </div>
+            <div class='coverage'>
+                <span class='i-lucide-map-pin size-4 shrink-0' aria-hidden='true'
+                ></span><div>
+                    <h3>{copy.coverage}</h3><p>{site.coverage[locale]}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    .contact {
+        background: var(--surface);
+        border-block: 1px solid var(--line);
+    }
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 100px;
+    }
+    .contact-details {
+        padding-top: 8px;
+    }
+    .contact-item {
+        display: flex;
+        gap: 22px;
+        padding-block: 24px;
+        border-bottom: 1px solid var(--line);
+    }
+    .contact-item:first-child {
+        padding-top: 0;
+    }
+    .contact-item > span {
+        color: var(--accent);
+        margin-top: 7px;
+    }
+    .contact-item h3 {
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 9px;
+    }
+    .contact-item p,
+    .contact-item a {
+        font-size: clamp(16px, 1.8vw, 23px);
+        letter-spacing: -0.02em;
+        overflow-wrap: anywhere;
+    }
+    .contact-item a:hover {
+        color: var(--accent);
+    }
+    .coverage {
+        display: flex;
+        gap: 12px;
+        align-items: start;
+        color: var(--muted);
+        margin-top: 24px;
+        font-size: 11px;
+    }
+    .coverage h3 {
+        color: var(--text);
+        margin-bottom: 6px;
+    }
+    @media (max-width: 1000px) {
+        .contact-grid {
+            gap: 50px;
+        }
+    }
+    @media (max-width: 767px) {
+        .contact-grid {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+    }
+</style>

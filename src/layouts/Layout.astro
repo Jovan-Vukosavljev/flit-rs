@@ -1,20 +1,205 @@
 ---
-interface Props {
-    title: string;
-}
+import '@fontsource-variable/manrope';
+import { type Locale, organizationData, site } from '../config/site';
+import type { Copy } from '../i18n';
 
-const { title } = Astro.props;
+interface Props {
+    locale: Locale;
+    copy: Copy;
+}
+const { locale, copy } = Astro.props;
+const canonical = `${site.url}/${locale}/`;
 ---
 
 <!doctype html>
-<html lang='en'>
+<html lang={locale === 'sr' ? 'sr-Latn' : 'en'} data-theme='dark'>
     <head>
         <meta charset='UTF-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <meta name='description' content='Flit, built with Astro and Svelte.' />
-        <title>{title}</title>
+        <title>{copy.title}</title>
+        <meta name='description' content={copy.description} />
+        <meta name='color-scheme' content='dark light' />
+        <link rel='canonical' href={canonical} />
+        <link rel='alternate' hreflang='sr' href={`${site.url}/sr/`} />
+        <link rel='alternate' hreflang='en' href={`${site.url}/en/`} />
+        <link rel='alternate' hreflang='x-default' href={`${site.url}/sr/`} />
+        <link rel='icon' href='/favicon.svg' type='image/svg+xml' />
+        <meta property='og:type' content='website' />
+        <meta property='og:site_name' content={site.name} />
+        <meta property='og:title' content={copy.title} />
+        <meta property='og:description' content={copy.description} />
+        <meta property='og:url' content={canonical} />
+        <meta property='og:locale' content={locale === 'sr' ? 'sr_RS' : 'en_GB'} />
+        <meta
+            property='og:locale:alternate'
+            content={locale === 'sr' ? 'en_GB' : 'sr_RS'}
+        />
+        <meta property='og:image' content={`${site.url}/images/social-preview.png`} />
+        <meta property='og:image:width' content='1200' />
+        <meta property='og:image:height' content='630' />
+        <meta property='og:image:alt' content='FLIT Support' />
+        <meta name='twitter:card' content='summary_large_image' />
+        <meta name='twitter:title' content={copy.title} />
+        <meta name='twitter:description' content={copy.description} />
+        <meta name='twitter:image' content={`${site.url}/images/social-preview.png`} />
+        <script is:inline>
+            try {
+                if (localStorage.getItem('flit-theme') === 'light') {
+                    document.documentElement.dataset.theme = 'light';
+                }
+            } catch {
+                // Keep the default theme when storage is unavailable
+            }
+        </script>
+        <script
+            type='application/ld+json'
+            set:html={JSON.stringify(organizationData()).replace(/</g, '\\u003c')}
+        />
     </head>
-    <body class='min-h-screen bg-stone-100 text-stone-900 antialiased'>
-        <slot />
-    </body>
+    <body><a href='#main' class='skip-link'>{copy.skip}</a><slot /></body>
 </html>
+<style is:global>
+    :root {
+        font-family: 'Manrope Variable', sans-serif;
+        --bg: #101416;
+        --surface: #171d20;
+        --surface-raised: #20292d;
+        --text: #f1f4f4;
+        --muted: #a5b0b5;
+        --line: #303a3f;
+        --accent: #69c9e1;
+        --button: #8cdcf0;
+        --button-text: #102329;
+        --grid: #25343b;
+        color-scheme: dark;
+    }
+    :root[data-theme='light'] {
+        --bg: #f8f9f6;
+        --surface: #eef1ee;
+        --surface-raised: #e3e9e6;
+        --text: #18262c;
+        --muted: #52636b;
+        --line: #cbd5d4;
+        --accent: #096c86;
+        --button: #145f74;
+        --button-text: #ffffff;
+        --grid: #c5d4d8;
+        color-scheme: light;
+    }
+    html {
+        scroll-behavior: auto;
+        scroll-padding-top: 40px;
+    }
+    body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+    }
+    * {
+        box-sizing: border-box;
+    }
+    ::selection {
+        background: var(--accent);
+        color: var(--bg);
+    }
+    a {
+        text-decoration: none;
+    }
+    button,
+    summary,
+    a {
+        -webkit-tap-highlight-color: transparent;
+    }
+    :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 5px;
+    }
+    .shell {
+        width: min(100% - 96px, 1240px);
+        margin-inline: auto;
+    }
+    .section-space {
+        padding-block: 108px;
+    }
+    .eyebrow {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        line-height: 1.6;
+        color: var(--accent);
+    }
+    .section-title {
+        font-size: clamp(32px, 3.5vw, 48px);
+        line-height: 1.18;
+        letter-spacing: -0.045em;
+        font-weight: 500;
+        white-space: pre-line;
+    }
+    .body-copy {
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.9;
+    }
+    .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        min-height: 50px;
+        padding: 14px 22px;
+        background: var(--button);
+        color: var(--button-text);
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 13px;
+        transition: filter 160ms;
+    }
+    .button:hover {
+        filter: brightness(1.12);
+    }
+    .text-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+    .text-link:hover {
+        color: var(--accent);
+    }
+    .skip-link {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        z-index: 100;
+        padding: 14px 20px;
+        background: var(--button);
+        color: var(--button-text);
+        transform: translateY(-200%);
+    }
+    .skip-link:focus {
+        transform: translateY(0);
+    }
+    @media (max-width: 767px) {
+        .shell {
+            width: calc(100% - 40px);
+        }
+        .section-space {
+            padding-block: 72px;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+        *,
+        *::before,
+        *::after {
+            /* biome-ignore lint/complexity/noImportantStyles: Honor reduced motion across scoped component styles */
+            transition: none !important;
+            /* biome-ignore lint/complexity/noImportantStyles: Honor reduced motion across scoped component styles */
+            animation: none !important;
+        }
+    }
+</style>

@@ -1,0 +1,87 @@
+---
+import type { Copy } from '../i18n';
+
+interface Props {
+    copy: Copy['approach'];
+}
+const { copy } = Astro.props;
+---
+
+<section id='approach' class='approach' aria-labelledby='approach-heading'>
+    <div class='shell section-space approach-grid'>
+        <div>
+            <p class='eyebrow'>{copy.eyebrow}</p><h2
+                id='approach-heading'
+                class='section-title mt-5'
+            >
+                {copy.heading}
+            </h2><p class='body-copy mt-6 max-w-sm'>{copy.body}</p>
+        </div>
+        <ol>
+            {
+                copy.steps.map((step, index) => (
+                    <li>
+                        <span class='step-number'>0{index + 1}</span>
+                        <div>
+                            <h3>{step.title}</h3>
+                            <p class='body-copy'>{step.body}</p>
+                        </div>
+                    </li>
+                ))
+            }
+        </ol>
+    </div>
+</section>
+<style>
+    .approach {
+        border-block: 1px solid var(--line);
+        background: var(--surface);
+    }
+    .approach-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 100px;
+    }
+    ol {
+        display: grid;
+    }
+    li {
+        display: flex;
+        align-items: start;
+        gap: 25px;
+        padding-block: 24px;
+    }
+    li:first-child {
+        padding-top: 0;
+    }
+    li:last-child {
+        padding-bottom: 0;
+    }
+    li + li {
+        border-top: 1px solid var(--line);
+    }
+    .step-number {
+        color: var(--accent);
+        font-size: 11px;
+        padding-top: 4px;
+    }
+    h3 {
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 9px;
+    }
+    li p {
+        font-size: 13px;
+    }
+    @media (max-width: 1000px) {
+        .approach-grid {
+            gap: 50px;
+        }
+    }
+    @media (max-width: 767px) {
+        .approach-grid {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+    }
+</style>

@@ -1,0 +1,174 @@
+---
+import { type Locale, site } from '../config/site';
+import type { Copy } from '../i18n';
+import ThemeToggle from './ThemeToggle.svelte';
+
+interface Props {
+    locale: Locale;
+    copy: Copy;
+}
+const { locale, copy } = Astro.props;
+const links = [
+    { id: 'services', label: copy.nav.services },
+    { id: 'approach', label: copy.nav.approach },
+    { id: 'drone', label: copy.nav.drone },
+];
+---
+
+<header id='top'>
+    <div class='shell header-row'>
+        <a href={`/${locale}/`} class='logo' aria-label='FLIT Support'
+            ><img src={site.logo} alt='FLIT Support' width='227' height='113' /></a
+        >
+        <nav aria-label={copy.navigation} class='desktop-nav'>
+            {links.map((link) => <a href={`#${link.id}`}>{link.label}</a>)}
+        </nav>
+        <div class='flex items-center gap-3 sm:gap-5'>
+            <nav aria-label={copy.language} class='languages'>
+                <a
+                    href='/sr/'
+                    lang='sr-Latn'
+                    hreflang='sr'
+                    aria-current={locale === 'sr' ? 'page' : undefined}>SR</a
+                ><span aria-hidden='true'>/</span>
+                <a
+                    href='/en/'
+                    lang='en'
+                    hreflang='en'
+                    aria-current={locale === 'en' ? 'page' : undefined}>EN</a
+                >
+            </nav>
+            <ThemeToggle labels={copy.theme} client:load />
+            <a class='header-contact text-link' href='#contact'
+                >{copy.nav.contact}<span
+                    class='i-lucide-arrow-up-right size-4'
+                    aria-hidden='true'></span></a
+            >
+        </div>
+        <details class='mobile-nav'>
+            <summary
+                >{copy.menu}<span class='i-lucide-menu size-4' aria-hidden='true'
+                ></span></summary
+            >
+            <nav aria-label={copy.navigation}>
+                {links.map((link) => <a href={`#${link.id}`}>{link.label}</a>)}<a
+                    href='#contact'>{copy.nav.contact}</a
+                >
+            </nav>
+        </details>
+    </div>
+</header>
+<style>
+    header {
+        border-bottom: 1px solid var(--line);
+    }
+    .header-row {
+        min-height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 28px;
+        position: relative;
+    }
+    .logo {
+        display: block;
+        padding: 5px 10px;
+        background: #f8f9f6;
+        border-radius: 4px;
+        flex-shrink: 0;
+    }
+    .logo img {
+        width: 97px;
+        height: auto;
+    }
+    .desktop-nav {
+        display: flex;
+        gap: 32px;
+        margin-left: auto;
+        margin-right: 28px;
+    }
+    .desktop-nav a {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--muted);
+    }
+    .desktop-nav a:hover {
+        color: var(--text);
+    }
+    .languages {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--muted);
+    }
+    .languages a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        min-width: 24px;
+    }
+    .languages a[aria-current] {
+        color: var(--text);
+        text-decoration: underline;
+        text-decoration-color: var(--accent);
+        text-underline-offset: 6px;
+    }
+    .header-contact {
+        border-left: 1px solid var(--line);
+        padding-left: 25px;
+        min-height: 42px;
+    }
+    .mobile-nav {
+        display: none;
+    }
+    @media (max-width: 1000px) {
+        .desktop-nav {
+            gap: 18px;
+            margin-right: 0;
+        }
+        .header-contact {
+            display: none;
+        }
+    }
+    @media (max-width: 767px) {
+        .header-row {
+            flex-wrap: wrap;
+            gap: 0;
+            padding-top: 16px;
+        }
+        .desktop-nav {
+            display: none;
+        }
+        .logo img {
+            width: 82px;
+        }
+        .mobile-nav {
+            display: block;
+            width: 100%;
+            margin-top: 16px;
+            border-top: 1px solid var(--line);
+        }
+        summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 44px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        .mobile-nav nav {
+            display: grid;
+            gap: 4px;
+            padding-bottom: 14px;
+        }
+        .mobile-nav nav a {
+            padding: 12px 0;
+            font-size: 14px;
+        }
+    }
+</style>

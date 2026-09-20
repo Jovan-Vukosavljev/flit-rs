@@ -2,7 +2,7 @@ import { defineConfig, presetIcons, presetWind4 } from 'unocss';
 
 export default defineConfig({
     content: {
-        filesystem: ['src/**/*.svelte'],
+        filesystem: ['src/**/*.{astro,svelte}'],
     },
     presets: [
         presetWind4({ preflights: { reset: true, theme: true } }),

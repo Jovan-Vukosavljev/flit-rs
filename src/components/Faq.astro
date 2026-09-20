@@ -1,0 +1,80 @@
+---
+import type { Copy } from '../i18n';
+
+interface Props {
+    copy: Copy['faq'];
+}
+const { copy } = Astro.props;
+---
+
+<section class='faq shell section-space' aria-labelledby='faq-heading'>
+    <div>
+        <p class='eyebrow'>{copy.eyebrow}</p><h2
+            id='faq-heading'
+            class='section-title mt-5'
+        >
+            {copy.heading}
+        </h2>
+    </div>
+    <div>
+        {
+            copy.items.map((item) => (
+                <details>
+                    <summary>
+                        {item.question}
+                        <span
+                            class='i-lucide-plus size-4 shrink-0'
+                            aria-hidden='true'
+                        />
+                    </summary>
+                    <p class='body-copy'>{item.answer}</p>
+                </details>
+            ))
+        }
+    </div>
+</section>
+<style>
+    .faq {
+        display: grid;
+        grid-template-columns: 0.8fr 1.2fr;
+        gap: 70px;
+        padding-top: 0;
+    }
+    details {
+        border-bottom: 1px solid var(--line);
+    }
+    details:first-child {
+        border-top: 1px solid var(--line);
+    }
+    summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        cursor: pointer;
+        padding-block: 23px;
+        font-size: 13px;
+        font-weight: 600;
+        list-style: none;
+    }
+    summary::-webkit-details-marker {
+        display: none;
+    }
+    summary span {
+        color: var(--accent);
+        transition: transform 160ms;
+    }
+    details[open] summary span {
+        transform: rotate(45deg);
+    }
+    details p {
+        padding-bottom: 24px;
+        font-size: 13px;
+    }
+    @media (max-width: 767px) {
+        .faq {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+    }
+</style>

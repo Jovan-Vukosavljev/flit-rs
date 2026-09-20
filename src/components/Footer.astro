@@ -1,0 +1,79 @@
+---
+import { type Locale, site } from '../config/site';
+import type { Copy } from '../i18n';
+
+interface Props {
+    locale: Locale;
+    copy: Copy['footer'];
+}
+const { locale, copy } = Astro.props;
+---
+
+<footer class='shell'>
+    <div class='footer-brand'>
+        <a href={`/${locale}/`} class='footer-logo' aria-label='FLIT Support'
+            ><img
+                src={site.logo}
+                alt='FLIT Support'
+                width='227'
+                height='113'
+                loading='lazy'
+            /></a
+        ><p>{copy.tagline}</p>
+    </div><div class='footer-meta'>
+        <p>© {new Date().getFullYear()} {site.name}. {copy.copyright}</p><a href='#top'
+            >{copy.top}<span class='i-lucide-arrow-up size-3.5' aria-hidden='true'
+            ></span></a
+        >
+    </div>
+</footer>
+<style>
+    footer {
+        padding-block: 40px 28px;
+    }
+    .footer-brand {
+        display: flex;
+        align-items: center;
+        gap: 23px;
+    }
+    .footer-logo {
+        display: block;
+        background: #f8f9f6;
+        border-radius: 3px;
+        padding: 4px 7px;
+    }
+    .footer-logo img {
+        width: 64px;
+        height: auto;
+    }
+    .footer-brand p {
+        font-size: 11px;
+        color: var(--muted);
+    }
+    .footer-meta {
+        display: flex;
+        justify-content: space-between;
+        gap: 25px;
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+        font-size: 10px;
+        color: var(--muted);
+    }
+    .footer-meta a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .footer-meta a:hover {
+        color: var(--text);
+    }
+    @media (max-width: 500px) {
+        .footer-meta {
+            flex-direction: column;
+        }
+        .footer-brand {
+            gap: 16px;
+        }
+    }
+</style>

@@ -1,0 +1,188 @@
+---
+import { type Locale, site } from '../config/site';
+import type { Copy } from '../i18n';
+
+interface Props {
+    locale: Locale;
+    copy: Copy['drone'];
+}
+const { locale, copy } = Astro.props;
+---
+
+<section
+    id='drone'
+    class='shell section-space drone-grid'
+    aria-labelledby='drone-heading'
+>
+    <div class='drone-visual'>
+        {
+            site.droneImage ? (
+                <img
+                    src={site.droneImage}
+                    alt={site.droneImageAlt[locale]}
+                    width='800'
+                    height='660'
+                    loading='lazy'
+                    decoding='async'
+                />
+            ) : (
+                <>
+                    <svg
+                        class='contours'
+                        viewBox='0 0 600 500'
+                        fill='none'
+                        aria-hidden='true'
+                    >
+                        <g stroke='currentColor' stroke-width='1'>
+                            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                                <path
+                                    transform={`translate(${i * -21},${i * 13}) scale(${1 + i * 0.12})`}
+                                    d='M110 -30C170 70 390 -20 427 120S304 213 347 329S600 442 612 534M-40 130C85 90 122 186 91 270S11 408 169 487'
+                                />
+                            ))}
+                        </g>
+                    </svg>
+
+                    <div class='frame-corner tl' />
+                    <div class='frame-corner tr' />
+                    <div class='frame-corner bl' />
+                    <div class='frame-corner br' />
+
+                    <div class='placeholder-content'>
+                        <span class='i-lucide-drone size-10' aria-hidden='true' />
+                        <p>{copy.placeholder}</p>
+                        <span>{copy.note}</span>
+                    </div>
+                    <span class='visual-label' aria-hidden='true'>
+                        FLIT / AERIAL PERSPECTIVES
+                    </span>
+                </>
+            )
+        }
+    </div>
+    <div class='drone-copy'>
+        <p class='eyebrow'>{copy.eyebrow}</p><h2
+            id='drone-heading'
+            class='section-title mt-5'
+        >
+            {copy.heading}
+        </h2><p class='body-copy mt-6'>{copy.body}</p><ul
+            class='flex flex-wrap gap-2 mt-6'
+        >
+            {copy.tags.map((tag) => <li>{tag}</li>)}
+        </ul><a href='#contact' class='text-link mt-8'
+            >{copy.action}<span
+                class='i-lucide-arrow-up-right size-4'
+                aria-hidden='true'></span></a
+        >
+    </div>
+</section>
+<style>
+    .drone-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: 90px;
+        align-items: center;
+    }
+    .drone-visual {
+        position: relative;
+        aspect-ratio: 1.2;
+        border-radius: 6px;
+        overflow: hidden;
+        background: var(--surface);
+        border: 1px solid var(--line);
+    }
+    .drone-visual img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .contours {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        color: var(--grid);
+        opacity: 0.8;
+    }
+    .placeholder-content {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding: 40px;
+        text-align: center;
+    }
+    .placeholder-content > span:first-child {
+        color: var(--accent);
+    }
+    .placeholder-content p {
+        font-size: 13px;
+    }
+    .placeholder-content > span:last-child {
+        font-size: 10px;
+        color: var(--muted);
+    }
+    .visual-label {
+        position: absolute;
+        bottom: 29px;
+        left: 30px;
+        font-size: 8px;
+        letter-spacing: 0.13em;
+        color: var(--muted);
+    }
+    .frame-corner {
+        position: absolute;
+        width: 19px;
+        height: 19px;
+        border-color: var(--muted);
+    }
+    .tl {
+        left: 22px;
+        top: 22px;
+        border-top: 1px solid;
+        border-left: 1px solid;
+    }
+    .tr {
+        right: 22px;
+        top: 22px;
+        border-top: 1px solid;
+        border-right: 1px solid;
+    }
+    .bl {
+        left: 22px;
+        bottom: 22px;
+        border-bottom: 1px solid;
+        border-left: 1px solid;
+    }
+    .br {
+        right: 22px;
+        bottom: 22px;
+        border-bottom: 1px solid;
+        border-right: 1px solid;
+    }
+    li {
+        border: 1px solid var(--line);
+        border-radius: 3px;
+        padding: 7px 11px;
+        font-size: 10px;
+        color: var(--muted);
+    }
+    @media (max-width: 1000px) {
+        .drone-grid {
+            gap: 40px;
+        }
+    }
+    @media (max-width: 767px) {
+        .drone-grid {
+            grid-template-columns: 1fr;
+            gap: 34px;
+        }
+        .drone-copy {
+            order: -1;
+        }
+    }
+</style>
