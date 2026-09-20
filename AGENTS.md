@@ -1,0 +1,22 @@
+# Instructions
+
+- Use Bun as the runtime, package manager, and test runner.
+- Use `bun add` to add packages.
+- Use `bun run dev` to start the dev server.
+- If Bun is not avaliable directly, use `~/.bun/bin/bun` instead.
+- Use Astro as the site framework with Svelte for interactive components.
+- Write all code in strict TypeScript.
+- Prefer single quotes.
+- Prefer braces for all control flow statements (if, else, for, while) — never use single-line braceless forms.
+- Use Biome for linting.
+- Use Prettier for code formatting.
+- Prefer Svelte 5 runes (`$state`, `$derived`, `$effect`) over legacy reactive syntax.
+- Only use Svelte components where interactivity is needed; default to plain `.astro` files for static pages.
+- Keep components small and focused — one concern per file.
+- Avoid shipping unnecessary JavaScript to the browser. Use `client:` directives only when a component needs interactivity.
+- Use UnoCSS with the Wind preset for utility CSS. Prefer utility classes over custom CSS when practical.
+- Prefer native HTML/CSS over JS solutions when possible (e.g., `<details>` over a JS accordion).
+- Use CSS scoped to components (`<style>` blocks in `.astro`/`.svelte` files) over global stylesheets.
+- No React. No Vue. No jQuery.
+- Avoid over-engineering. No abstractions for one-time operations.
+- Comments must start with a capital letter and not end with a period.

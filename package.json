@@ -1,0 +1,35 @@
+{
+    "name": "flit-rs",
+    "version": "0.0.1",
+    "private": true,
+    "type": "module",
+    "packageManager": "bun@1.4.2",
+    "scripts": {
+        "lint": "biome check .",
+        "lint:fix": "biome check --write .",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "dev": "astro dev",
+        "check": "astro check && svelte-check --tsconfig ./tsconfig.json",
+        "build": "bun run check && astro build",
+        "preview": "astro preview",
+        "astro": "astro"
+    },
+    "dependencies": {
+        "@astrojs/svelte": "^9.0.1",
+        "astro": "^7.3.3",
+        "svelte": "^5.57.1"
+    },
+    "devDependencies": {
+        "@astrojs/check": "^0.9.10",
+        "@biomejs/biome": "^2.5.12",
+        "@iconify-json/lucide": "^1.2.135",
+        "@unocss/astro": "^66.10.5",
+        "prettier": "^3.9.6",
+        "prettier-plugin-astro": "^0.14.1",
+        "prettier-plugin-svelte": "^4.1.1",
+        "svelte-check": "^4.7.6",
+        "typescript": "^6",
+        "unocss": "^66.10.5"
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "astro-build.astro-vscode",
+        "svelte.svelte-vscode",
+        "antfu.unocss",
+        "biomejs.biome",
+        "esbenp.prettier-vscode"
+    ],
+    "unwantedRecommendations": []
+}
