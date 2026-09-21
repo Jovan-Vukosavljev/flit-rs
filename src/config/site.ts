@@ -15,8 +15,8 @@ interface SiteConfig {
 export const site: SiteConfig = {
     name: 'FLIT Support',
     url: 'https://flit.rs',
-    phone: null,
-    email: null,
+    phone: '+381 (0) 69 1600516',
+    email: 'ivan.lalic@flit.rs',
     coverage: {
         sr: 'Dolazak na lokaciju po dogovoru',
         en: 'On-site visits by arrangement',
