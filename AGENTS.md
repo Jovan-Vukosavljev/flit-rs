@@ -20,3 +20,4 @@
 - No React. No Vue. No jQuery.
 - Avoid over-engineering. No abstractions for one-time operations.
 - Comments must start with a capital letter and not end with a period.
+- Do not write unit tests.

@@ -1,5 +1,7 @@
 ---
-import '@fontsource-variable/manrope';
+import '../styles/fonts.css';
+import manropeLatinExtended from '@fontsource-variable/manrope/files/manrope-latin-ext-wght-normal.woff2?url';
+import manropeLatin from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
 import { type Locale, organizationData, site } from '../config/site';
 import type { Copy } from '../i18n';
 
@@ -16,6 +18,24 @@ const canonical = `${site.url}/${locale}/`;
     <head>
         <meta charset='UTF-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <link
+            rel='preload'
+            href={manropeLatin}
+            as='font'
+            type='font/woff2'
+            crossorigin='anonymous'
+        />
+        {
+            locale === 'sr' && (
+                <link
+                    rel='preload'
+                    href={manropeLatinExtended}
+                    as='font'
+                    type='font/woff2'
+                    crossorigin='anonymous'
+                />
+            )
+        }
         <title>{copy.title}</title>
         <meta name='description' content={copy.description} />
         <meta name='color-scheme' content='dark light' />

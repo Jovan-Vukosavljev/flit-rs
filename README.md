@@ -41,6 +41,7 @@ All copy, service descriptions, FAQs, metadata and control labels are in `src/i1
 - To replace the drone placeholder, add an optimized image to `public/images/`, set `droneImage` to its path such as `/images/aerial-project.webp`, and update both `droneImageAlt` strings. Use imagery you have permission to publish. The image fills a 1.2:1 frame with `object-fit: cover`; its loading is deferred.
 - Replace `public/images/social-preview.png` for the social sharing card, keeping it 1200 × 630. The matching SVG is an editable source asset.
 - Theme tokens and shared layout styles are in `src/layouts/Layout.astro`; components hold their own scoped styles. Manrope is served locally, with no external font requests.
+- Font faces live in `src/styles/fonts.css`. The layout preloads Latin on both routes and Latin Extended for Serbian diacritics. `font-display: optional` prevents a late font swap: if a font is too slow, the browser keeps the fallback for that visit instead of shifting the text. Later navigations can use the cached Manrope font.
 - Dark mode is the default even if the operating system prefers light. A selected theme is stored under `flit-theme` and restored before first paint. Storage failures do not prevent theme changes.
 
 ## Testing
