@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy Pages and publish release
 
 on:
     push:
@@ -51,3 +51,46 @@ jobs:
 
             - id: deployment
               uses: actions/deploy-pages@v4
+
+    release:
+        needs: deploy
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: write
+
+        steps:
+            - uses: actions/checkout@v6
+
+            - uses: actions/setup-node@v6
+              with:
+                  node-version: '24'
+
+            - uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: '1.4.2'
+
+            - run: bun install --frozen-lockfile
+
+            - name: Build for flit.rs
+              run: bun run build
+              env:
+                  SITE_URL: https://flit.rs
+
+            - name: Package site
+              working-directory: dist
+              run: zip -r ../flit.rs.zip .
+
+            - name: Publish GitHub Release
+              env:
+                  GH_TOKEN: ${{ github.token }}
+                  GH_REPO: ${{ github.repository }}
+                  RELEASE_TAG: ${{ github.ref_name }}
+              run: |
+                  if gh release view "$RELEASE_TAG" > /dev/null 2>&1; then
+                      gh release upload "$RELEASE_TAG" flit.rs.zip --clobber
+                  else
+                      gh release create "$RELEASE_TAG" flit.rs.zip \
+                          --verify-tag --title "$RELEASE_TAG" --generate-notes \
+                          --notes-file .github/release-notes.md
+                  fi

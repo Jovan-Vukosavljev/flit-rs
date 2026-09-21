@@ -88,11 +88,15 @@ Publish a release from the intended commit:
 
 ```sh
 git push origin main
-git tag v0.1.0
-git push origin v0.1.0
+git tag v0.1.1
+git push origin v0.1.1
 ```
 
 Use a new version tag for later releases. Pushing `main` alone does not deploy.
+
+After Pages deploys successfully, a separate job builds with `SITE_URL=https://flit.rs` and publishes a GitHub Release for the same tag with `flit.rs.zip` attached. This archive contains the compiled site at its root, with `/sr/`, `/en/`, and assets using domain-root paths. Canonical URLs, language alternates, structured data, and the sitemap point to `https://flit.rs`.
+
+Download `flit.rs.zip` from the release and extract its contents into the flit.rs web root. No server-side JavaScript runtime is required. Configure the host's permanent redirects as described above. Creating the release does not upload files to the flit.rs server or change DNS. Re-running a release job replaces the archive attached to that tag.
 
 Pages must use **GitHub Actions** as its build source. The `github-pages` environment must allow `v*` tags to deploy. The workflow obtains the site URL from GitHub Pages and passes it as `SITE_URL`, so the site, language links, metadata, images and fonts work at `https://jovan-vukosavljev.github.io/flit-rs/`.
 
