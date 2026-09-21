@@ -2,6 +2,7 @@
 import '../styles/fonts.css';
 import manropeLatinExtended from '@fontsource-variable/manrope/files/manrope-latin-ext-wght-normal.woff2?url';
 import manropeLatin from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
+import { images } from '../config/images';
 import { type Locale, organizationData, site } from '../config/site';
 import type { Copy } from '../i18n';
 
@@ -11,6 +12,7 @@ interface Props {
 }
 const { locale, copy } = Astro.props;
 const canonical = `${site.url}/${locale}/`;
+const base = import.meta.env.BASE_URL;
 ---
 
 <!doctype html>
@@ -43,7 +45,8 @@ const canonical = `${site.url}/${locale}/`;
         <link rel='alternate' hreflang='sr' href={`${site.url}/sr/`} />
         <link rel='alternate' hreflang='en' href={`${site.url}/en/`} />
         <link rel='alternate' hreflang='x-default' href={`${site.url}/sr/`} />
-        <link rel='icon' href='/favicon.svg' type='image/svg+xml' />
+        <link rel='icon' href={`${base}favicon.png`} type='image/png' sizes='16x16' />
+        <link rel='apple-touch-icon' href={`${base}apple-touch-icon.png`} />
         <meta property='og:type' content='website' />
         <meta property='og:site_name' content={site.name} />
         <meta property='og:title' content={copy.title} />
@@ -73,7 +76,10 @@ const canonical = `${site.url}/${locale}/`;
         </script>
         <script
             type='application/ld+json'
-            set:html={JSON.stringify(organizationData()).replace(/</g, '\\u003c')}
+            set:html={JSON.stringify(organizationData(images.logo.src)).replace(
+                /</g,
+                '\\u003c',
+            )}
         />
     </head>
     <body><a href='#main' class='skip-link'>{copy.skip}</a><slot /></body>
@@ -94,16 +100,16 @@ const canonical = `${site.url}/${locale}/`;
         color-scheme: dark;
     }
     :root[data-theme='light'] {
-        --bg: #f8f9f6;
-        --surface: #eef1ee;
-        --surface-raised: #e3e9e6;
-        --text: #18262c;
-        --muted: #52636b;
-        --line: #cbd5d4;
-        --accent: #096c86;
+        --bg: #e9e8e2;
+        --surface: #e0e3de;
+        --surface-raised: #d5dcd7;
+        --text: #263238;
+        --muted: #4c5b60;
+        --line: #c0c9c4;
+        --accent: #075f77;
         --button: #145f74;
-        --button-text: #ffffff;
-        --grid: #c5d4d8;
+        --button-text: #f2f4ef;
+        --grid: #bac9c8;
         color-scheme: light;
     }
     html {

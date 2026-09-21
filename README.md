@@ -24,7 +24,7 @@ Open http://localhost:4321/sr/. If Bun is not on your PATH, use `~/.bun/bin/bun`
 
 ## Edit business details
 
-All contact details and asset paths are in `src/config/site.ts`. Replace `null` with the confirmed phone number and email:
+Contact details are in `src/config/site.ts`; image imports and alt text are in `src/config/images.ts`. Replace `null` with the confirmed phone number and email:
 
 ```ts
 phone: '+381 11 123 4567',
@@ -37,8 +37,9 @@ All copy, service descriptions, FAQs, metadata and control labels are in `src/i1
 
 ## Images and theme
 
-- The original FLIT logo is stored locally at `public/images/flit-logo.png`. Its light backing preserves contrast in both themes.
-- To replace the drone placeholder, add an optimized image to `public/images/`, set `droneImage` to its path such as `/images/aerial-project.webp`, and update both `droneImageAlt` strings. Use imagery you have permission to publish. The image fills a 1.2:1 frame with `object-fit: cover`; its loading is deferred.
+- Image sources live in `src/assets/`. The header and footer use Astro's `<Image>` to generate appropriately sized WebP logos with transparent backgrounds. `public/favicon.png` and `public/apple-touch-icon.png` are the icons from the original FLIT site.
+- To replace the drone image, add the source to `src/assets/` and update its import in `src/config/images.ts`, along with both `droneImageAlt` strings. Set `droneImage` to `null` to restore the placeholder. Use imagery you have permission to publish; the current generated image is illustrative, not a completed FLIT project.
+- The drone section uses Astro's `<Picture>` to generate responsive AVIF and WebP images with JPEG fallbacks during `bun run build`. Its `srcset` and `sizes` let the browser choose a suitable resolution. The image fills a 1.2:1 frame with `object-fit: cover` and loads lazily. Optimized files are emitted under `dist/_astro/`.
 - Replace `public/images/social-preview.png` for the social sharing card, keeping it 1200 × 630. The matching SVG is an editable source asset.
 - Theme tokens and shared layout styles are in `src/layouts/Layout.astro`; components hold their own scoped styles. Manrope is served locally, with no external font requests.
 - Font faces live in `src/styles/fonts.css`. The layout preloads Latin on both routes and Latin Extended for Serbian diacritics. `font-display: optional` prevents a late font swap: if a font is too slow, the browser keeps the fallback for that visit instead of shifting the text. Later navigations can use the cached Manrope font.
@@ -78,3 +79,27 @@ curl -I https://flit.rs/index.php/rs/it-usluge/it-podrska
 The first response should be `301` with `Location: /sr/`. Use a listed legacy URL to verify each migration rule. Deployment and production HTTP verification are separate from this implementation.
 
 Search metadata, organization JSON-LD, `/sitemap.xml` and `/robots.txt` are generated from the same domain configuration. Both languages have self-canonical URLs and reciprocal language alternates; `x-default` points to Serbian. There is no automatic browser-language redirect.
+
+## GitHub Pages releases
+
+The public repository is `Jovan-Vukosavljev/flit-rs`. `.github/workflows/deploy.yml` deploys to GitHub Pages only when a tag matching `v*` is pushed. It installs locked dependencies with Bun, checks lint and formatting, builds the site, and deploys `dist/` with the official Pages actions.
+
+Publish a release from the intended commit:
+
+```sh
+git push origin main
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+Use a new version tag for later releases. Pushing `main` alone does not deploy.
+
+Pages must use **GitHub Actions** as its build source. The `github-pages` environment must allow `v*` tags to deploy. The workflow obtains the site URL from GitHub Pages and passes it as `SITE_URL`, so the site, language links, metadata, images and fonts work at `https://jovan-vukosavljev.github.io/flit-rs/`.
+
+To reproduce that build locally:
+
+```sh
+SITE_URL=https://jovan-vukosavljev.github.io/flit-rs bun run build
+```
+
+Without `SITE_URL`, development uses root paths and metadata defaults to `https://flit.rs`. No custom domain or DNS changes are needed for the GitHub Pages deployment. GitHub Pages does not process `_redirects`; the site root uses Astro's static redirect page to reach Serbian. Legacy PHP redirects require separate server/CDN configuration if the original domain is migrated later.

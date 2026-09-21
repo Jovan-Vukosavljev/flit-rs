@@ -1,6 +1,9 @@
 ---
-import { type Locale, site } from '../config/site';
+import { Picture } from 'astro:assets';
+import { images } from '../config/images';
+import type { Locale } from '../config/site';
 import type { Copy } from '../i18n';
+import DronePlaceholder from './DronePlaceholder.astro';
 
 interface Props {
     locale: Locale;
@@ -16,47 +19,19 @@ const { locale, copy } = Astro.props;
 >
     <div class='drone-visual'>
         {
-            site.droneImage ? (
-                <img
-                    src={site.droneImage}
-                    alt={site.droneImageAlt[locale]}
-                    width='800'
-                    height='660'
+            images.droneImage ? (
+                <Picture
+                    src={images.droneImage}
+                    alt={images.droneImageAlt[locale]}
+                    formats={['avif', 'webp']}
+                    fallbackFormat='jpg'
+                    widths={[400, 720, 1000, images.droneImage.width]}
+                    sizes='(max-width: 767px) calc(100vw - 40px), (max-width: 1000px) calc(52.38vw - 71.24px), (max-width: 1336px) calc(52.38vw - 97.43px), 603px'
                     loading='lazy'
                     decoding='async'
                 />
             ) : (
-                <>
-                    <svg
-                        class='contours'
-                        viewBox='0 0 600 500'
-                        fill='none'
-                        aria-hidden='true'
-                    >
-                        <g stroke='currentColor' stroke-width='1'>
-                            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                                <path
-                                    transform={`translate(${i * -21},${i * 13}) scale(${1 + i * 0.12})`}
-                                    d='M110 -30C170 70 390 -20 427 120S304 213 347 329S600 442 612 534M-40 130C85 90 122 186 91 270S11 408 169 487'
-                                />
-                            ))}
-                        </g>
-                    </svg>
-
-                    <div class='frame-corner tl' />
-                    <div class='frame-corner tr' />
-                    <div class='frame-corner bl' />
-                    <div class='frame-corner br' />
-
-                    <div class='placeholder-content'>
-                        <span class='i-lucide-drone size-10' aria-hidden='true' />
-                        <p>{copy.placeholder}</p>
-                        <span>{copy.note}</span>
-                    </div>
-                    <span class='visual-label' aria-hidden='true'>
-                        FLIT / AERIAL PERSPECTIVES
-                    </span>
-                </>
+                <DronePlaceholder placeholder={copy.placeholder} note={copy.note} />
             )
         }
     </div>
@@ -92,77 +67,15 @@ const { locale, copy } = Astro.props;
         background: var(--surface);
         border: 1px solid var(--line);
     }
-    .drone-visual img {
+    .drone-visual :global(picture) {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+    .drone-visual :global(img) {
         width: 100%;
         height: 100%;
         object-fit: cover;
-    }
-    .contours {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        color: var(--grid);
-        opacity: 0.8;
-    }
-    .placeholder-content {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 16px;
-        padding: 40px;
-        text-align: center;
-    }
-    .placeholder-content > span:first-child {
-        color: var(--accent);
-    }
-    .placeholder-content p {
-        font-size: 13px;
-    }
-    .placeholder-content > span:last-child {
-        font-size: 10px;
-        color: var(--muted);
-    }
-    .visual-label {
-        position: absolute;
-        bottom: 29px;
-        left: 30px;
-        font-size: 8px;
-        letter-spacing: 0.13em;
-        color: var(--muted);
-    }
-    .frame-corner {
-        position: absolute;
-        width: 19px;
-        height: 19px;
-        border-color: var(--muted);
-    }
-    .tl {
-        left: 22px;
-        top: 22px;
-        border-top: 1px solid;
-        border-left: 1px solid;
-    }
-    .tr {
-        right: 22px;
-        top: 22px;
-        border-top: 1px solid;
-        border-right: 1px solid;
-    }
-    .bl {
-        left: 22px;
-        bottom: 22px;
-        border-bottom: 1px solid;
-        border-left: 1px solid;
-    }
-    .br {
-        right: 22px;
-        bottom: 22px;
-        border-bottom: 1px solid;
-        border-right: 1px solid;
     }
     li {
         border: 1px solid var(--line);

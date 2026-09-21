@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import { images } from '../config/images';
 import { type Locale, site } from '../config/site';
 import type { Copy } from '../i18n';
 
@@ -7,16 +9,18 @@ interface Props {
     copy: Copy['footer'];
 }
 const { locale, copy } = Astro.props;
+const base = import.meta.env.BASE_URL;
 ---
 
 <footer class='shell'>
     <div class='footer-brand'>
-        <a href={`/${locale}/`} class='footer-logo' aria-label='FLIT Support'
-            ><img
-                src={site.logo}
+        <a href={`${base}${locale}/`} class='footer-logo' aria-label='FLIT Support'
+            ><Image
+                src={images.logo}
                 alt='FLIT Support'
-                width='227'
-                height='113'
+                width={64}
+                widths={[64, 128]}
+                sizes='64px'
                 loading='lazy'
             /></a
         ><p>{copy.tagline}</p>
@@ -38,11 +42,9 @@ const { locale, copy } = Astro.props;
     }
     .footer-logo {
         display: block;
-        background: #f8f9f6;
-        border-radius: 3px;
         padding: 4px 7px;
     }
-    .footer-logo img {
+    .footer-logo :global(img) {
         width: 64px;
         height: auto;
     }
