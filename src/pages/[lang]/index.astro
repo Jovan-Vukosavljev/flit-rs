@@ -9,7 +9,9 @@ import Hero from '../../components/Hero.astro';
 import Services from '../../components/Services.astro';
 import type { Locale } from '../../config/site';
 import { translations } from '../../i18n';
+
 import Layout from '../../layouts/Layout.astro';
+
 export function getStaticPaths() {
     return [
         { params: { lang: 'sr' }, props: { locale: 'sr' } },
@@ -25,7 +27,7 @@ const copy = translations[locale];
 
 <Layout locale={locale} copy={copy}>
     <Header locale={locale} copy={copy} />
-    <main id='main' tabindex='-1'>
+    <main id='main'>
         <Hero copy={copy} />
         <Services copy={copy.services} />
         <Approach copy={copy.approach} />
